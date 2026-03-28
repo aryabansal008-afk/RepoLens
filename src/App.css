@@ -1,38 +1,197 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Imbue:opsz,wght@10..20,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  color: white;
+  overflow-x: hidden;
+  background-color: #040812;
+  background-image: URL("HeroSection4.png");
+  background-repeat: no-repeat;
+  background-position:center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+.container {
   min-height: 100vh;
+  width: 100vw;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-bg{
+    background-image: URL("HeroSection4.png");
+}
+
+/* Navbar */
+.navbar {
+  position: fixed;
+  top: 30px;
+  width: 90%;
+  max-width: 1000px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px 0 32px;
+  z-index: 100;
+}
+
+.nav-logo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bolder;
+}
+
+.nav-logo .logo{
+    height:65px;
+    width:65px;
+}
+
+.nav-logo .logo img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    margin-top:5px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+}
+
+.nav-links a {
+  color: #a1a1aa;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: white;
+}
+
+.nav-event {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-event:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Hero Content */
+.hero-content {
+  flex:1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  text-align: center;
+  padding: 0 10px;
+  width: 100%;
+  font-size:16px;
+  font-weight:100px;
+  color:white;
+}
+
+.badge {
+  background: rgba(20, 20, 30, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
   color: white;
+  margin-bottom: 24px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
-.App-link {
-  color: #61dafb;
+.hero-title {
+  font-size: 70px;
+  font-weight:bolder;
+  line-height: 1.3;
+  letter-spacing:0;
+  margin-bottom: 30px;
+  color:white;
+  text-shadow: 0 4px 24px rgba(255, 234, 0, 0.4);
+  font-family:'Imbue';
+  letter-spacing:3px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.hero-subtitle {
+  color: #a1a1aa;
+  font-size: 16px;
+  max-width: 600px;
+  margin-bottom: 50px;
 }
+
+/* Search Bar */
+.search-container {
+  display: flex;
+  align-items: center;
+  background: rgba(20, 20, 30, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 8px 8px 24px;
+  border-radius: 40px;
+  width: 100%;
+  max-width: 550px;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  transition: border-color 0.3s ease;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.search-container:focus-within {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.search-input {
+  background: transparent;
+  border: none;
+  color: white;
+  flex: 1;
+  font-size: 16px;
+  outline: none;
+}
+
+.search-button {
+  background-color: white;
+  color: #000;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-weight:bold;
+  font-size:16px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.4);
+}
+
+
+
