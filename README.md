@@ -1,6 +1,6 @@
 # RepoLens
 
-RepoLens is a frontend-only React app for public GitHub repository and developer analytics. It calls `https://api.github.com` from the browser. There is no API server, database, or GitHub token in this project.
+RepoLens is a frontend-only React app for public GitHub repository and developer analytics. It calls `https://api.github.com` from the browser. There is no API server, database, or GitHub token in this project
 
 ## Setup
 
