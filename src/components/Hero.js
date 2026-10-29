@@ -5,7 +5,7 @@ function Hero() {
   return (
     <main className="hero-content">
       <div className="badge">
-        <p>Search any developer profile</p>
+        <p>Search any developer or repository</p>
       </div>
       <h1 className="hero-title">
         Your Lens Into Any Developer's <br/>GITHUB UNIVERSE

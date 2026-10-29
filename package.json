@@ -9,8 +9,11 @@
     "@testing-library/user-event": "^13.5.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "react-markdown": "^8.0.7",
     "react-router-dom": "^7.13.2",
     "react-scripts": "5.0.1",
+    "recharts": "^2.15.4",
+    "remark-gfm": "^3.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -24,6 +27,12 @@
       "react-app",
       "react-app/jest"
     ]
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^react-router-dom$": "<rootDir>/node_modules/react-router-dom/dist/index.js",
+      "^react-router/dom$": "<rootDir>/node_modules/react-router/dist/development/dom-export.js"
+    }
   },
   "browserslist": {
     "production": [

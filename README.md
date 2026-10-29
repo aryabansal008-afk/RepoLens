@@ -1,70 +1,35 @@
-# Getting Started with Create React App
+# RepoLens
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+RepoLens is a frontend-only React app for public GitHub repository and developer analytics. It calls `https://api.github.com` from the browser. There is no API server, database, or GitHub token in this project.
 
-## Available Scripts
+## Setup
 
-In the project directory, you can run:
+```bash
+cd github-analyzer
+npm install
+npm start
+```
 
-### `npm start`
+Open [http://localhost:3000](http://localhost:3000).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Optional: copy `.env.example` to `.env` and set `REACT_APP_SUPPORT_EMAIL` if the FAQ page should open a real mailbox. Leave it empty to keep the contact form from claiming a message was sent. Do not add a GitHub token. Create React App inlines every `REACT_APP_*` value into the browser bundle.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Scripts
 
-### `npm test`
+- `npm start` — development server
+- `npm test` — Jest
+- `npm run build` — production build in `build/`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## GitHub data
 
-### `npm run build`
+Search, trending discovery, repository pages, developer pages, languages, commit statistics, pull requests, issues, contributors, and public events use unauthenticated REST endpoints. Responses are cached in memory, in-flight requests are cancelled when you leave a page, and rate-limit responses are shown instead of replacement data.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The contribution calendar is not loaded. GitHub only exposes it through authenticated GraphQL, and this app does not send a token. Star history is drawn only when every stargazer timestamp for a small repository is returned.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Blog
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Published articles live in `src/data/blogSeed.js` and ship with the frontend. `/admin/blog` is a local Markdown editor: drafts stay in this browser, with preview plus JSON and Markdown import/export. Exporting a file does not publish it. Add the exported article to `blogSeed.js` and rebuild to put it on the public blog.
 
-### `npm run eject`
+## Support
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The FAQ page keeps accordion search and categories. Report a bug and request a feature open `mailto:` links when `REACT_APP_SUPPORT_EMAIL` is set. The page does not store messages.
