@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-const FIELDS = ['q', 'type', 'language', 'owner', 'stars', 'forks', 'created', 'updated', 'archived', 'topic', 'sort'];
+const FIELDS = ['q', 'type', 'language', 'owner', 'stars', 'forks', 'created', 'updated', 'archived', 'topic', 'sort', 'order'];
 
 function readFilters(params) {
   return {
@@ -16,6 +16,7 @@ function readFilters(params) {
     archived: params.get('archived') || '',
     topic: params.get('topic') || '',
     sort: params.get('sort') || '',
+    order: params.get('order') === 'asc' ? 'asc' : '',
   };
 }
 
@@ -119,6 +120,13 @@ export default function AdvancedSearch() {
           <span>Sort</span>
           <select value={repoSorts.some(([id]) => id === draft.sort) ? draft.sort : ''} onChange={(event) => update('sort', event.target.value)}>
             {repoSorts.map(([id, label]) => <option value={id} key={label}>{label}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>Order</span>
+          <select value={draft.order === 'asc' ? 'asc' : 'desc'} onChange={(event) => update('order', event.target.value === 'asc' ? 'asc' : '')}>
+            <option value="desc">Descending</option>
+            <option value="asc">Ascending</option>
           </select>
         </label>
       </div>

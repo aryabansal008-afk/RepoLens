@@ -1,7 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
-import './styles/shared.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer/Footer';
 import Home from './pages/Home';
@@ -17,6 +16,8 @@ const BlogDetails = lazy(() => import('./pages/Blog/BlogDetails'));
 const BlogEditor = lazy(() => import('./pages/Blog/BlogEditor'));
 const FAQ = lazy(() => import('./pages/FAQ/FAQ'));
 const Events = lazy(() => import('./pages/Events/Events'));
+const Comparison = lazy(() => import('./pages/Comparison/Comparison'));
+const Bookmarks = lazy(() => import('./pages/Bookmarks/Bookmarks'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 class ErrorBoundary extends React.Component {
@@ -45,10 +46,9 @@ class ErrorBoundary extends React.Component {
 
 function AppContent() {
   const location = useLocation();
-  const isHome = location.pathname === '/';
 
   return (
-    <div className={`container ${isHome ? 'bg-home' : 'bg-dark-spotlights'}`}>
+    <div className="container app-bg">
       <Navbar />
       <RateLimitBanner />
       <ErrorBoundary key={location.pathname}>
@@ -57,8 +57,12 @@ function AppContent() {
             <Route path="/" element={<Home />} />
             <Route path="/languages" element={<Languages />} />
             <Route path="/data-explore" element={<DataExplore />} />
+            <Route path="/explore/:owner/:repo" element={<RepositoryDetails />} />
+            <Route path="/users/:username" element={<DeveloperProfile />} />
             <Route path="/data-explore/repository/:owner/:repo" element={<RepositoryDetails />} />
             <Route path="/data-explore/developer/:username" element={<DeveloperProfile />} />
+            <Route path="/compare" element={<Comparison />} />
+            <Route path="/bookmarks" element={<Bookmarks />} />
             <Route path="/blog" element={<BlogList />} />
             <Route path="/blog/:slug" element={<BlogDetails />} />
             <Route path="/admin/blog" element={<BlogEditor />} />
@@ -69,7 +73,7 @@ function AppContent() {
           </Routes>
         </Suspense>
       </ErrorBoundary>
-      {isHome ? null : <Footer />}
+      <Footer />
     </div>
   );
 }

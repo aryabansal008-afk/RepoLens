@@ -1,9 +1,9 @@
 import React from 'react';
 import SearchBar from './SearchBar';
 
-function Hero() {
+function Hero({ compact = false }) {
   return (
-    <main className="hero-content">
+    <main className={`hero-content${compact ? ' hero-compact' : ''}`}>
       <div className="badge">
         <p>Search any developer or repository</p>
       </div>

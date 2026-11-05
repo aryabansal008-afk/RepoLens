@@ -55,7 +55,7 @@ export const faqSections = [
         id: 'trending',
         question: 'Are trending repositories official GitHub Trending?',
         answer:
-          'No. The discovery list is GitHub repository search for non-forks created in the selected window, sorted by stars. The page states that method next to the results.',
+          'No. Data Explore opens on highly starred public repositories from GitHub Search, sorted by stars. A creation window can narrow that list. Neither view is GitHub’s official Trending ranking.',
       },
       {
         id: 'ambiguous',
@@ -127,7 +127,19 @@ export const faqSections = [
         id: 'sixty',
         question: 'Why do requests fail after a while?',
         answer:
-          'Unauthenticated GitHub requests are limited, commonly to 60 per hour for the calling IP. RepoLens caches recent responses and surfaces the rate-limit error instead of substituting made-up data.',
+          'Unauthenticated GitHub REST requests are limited, commonly to 60 per hour for the calling IP. Search has a separate, tighter limit. RepoLens caches recent responses and shows the rate-limit message instead of substituting made-up data. Use Refresh when you want a new request.',
+      },
+      {
+        id: 'bookmarks',
+        question: 'Where are bookmarks and comparisons stored?',
+        answer:
+          'In this browser only, using localStorage. They are not sent to a RepoLens server, and no GitHub token is stored. Clearing site data removes them. Bookmark counts are the values saved at that moment; open the repository for live numbers.',
+      },
+      {
+        id: 'private-repos',
+        question: 'Can RepoLens show private repositories?',
+        answer:
+          'No. The app uses unauthenticated public REST requests. Private repositories, private contributions, and the official contribution calendar are unavailable.',
       },
       {
         id: 'token-limit',

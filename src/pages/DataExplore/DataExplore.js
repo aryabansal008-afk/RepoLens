@@ -38,6 +38,7 @@ export default function DataExplore() {
       archived: current.get('archived') || '',
       topic: current.get('topic') || '',
       sort: current.get('sort') || '',
+      order: current.get('order') || '',
       page: Number(current.get('page') || 1),
     };
   }, [paramsKey, reloadKey]);
@@ -51,11 +52,11 @@ export default function DataExplore() {
   }
 
   return (
-    <main className="page-shell">
+    <main className="page-shell page-explore">
       <header className="page-intro">
         <h1 className="page-title">Data Explore</h1>
         <p className="lede">
-          Find a repository or developer, or start from repositories that were created recently and collected stars.
+          Search public repositories and developers, or start from highly starred repositories returned by GitHub Search.
         </p>
       </header>
       <AdvancedSearch />
@@ -66,7 +67,10 @@ export default function DataExplore() {
               <h2>Search results</h2>
               {results.repoQuery ? <p>Repository query <code>{results.repoQuery}</code></p> : null}
             </div>
-            <Link to="/data-explore">Back to discovery</Link>
+            <div className="card-actions">
+              <button type="button" className="btn-ghost" onClick={() => setReloadKey((value) => value + 1)}>Refresh</button>
+              <Link to="/data-explore">Reset filters</Link>
+            </div>
           </div>
           {results.status === 'loading' ? <CardSkeletonGrid /> : null}
           {results.status === 'error' ? (

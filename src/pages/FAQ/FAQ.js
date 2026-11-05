@@ -70,7 +70,7 @@ export default function FAQ() {
       <div className="faq-tools">
         <label>
           <span className="sr-only">Search questions</span>
-          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search questions" />
+          <input className="faq-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search questions" />
         </label>
         <div className="card-actions">
           <button type="button" className="btn-ghost" onClick={() => setMode({ value: 'all', nonce: Date.now() })}>Expand all</button>

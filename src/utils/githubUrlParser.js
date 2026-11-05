@@ -42,11 +42,26 @@ function cleanSegment(value) {
 }
 
 export function repositoryPath(owner, repo) {
-  return `/data-explore/repository/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`;
+  return `/explore/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`;
 }
 
 export function developerPath(username) {
-  return `/data-explore/developer/${encodeURIComponent(username)}`;
+  return `/users/${encodeURIComponent(username)}`;
+}
+
+export function resolveRepoUrl(href, base) {
+  if (!href) return null;
+  const value = String(href).trim();
+  if (/^(javascript|data):/i.test(value)) return null;
+  if (value.startsWith('#')) return value;
+  if (/^mailto:/i.test(value)) return value;
+  try {
+    const url = new URL(value, base);
+    if (url.protocol !== 'http:' && url.protocol !== 'https:' && url.protocol !== 'mailto:') return null;
+    return url.toString();
+  } catch (error) {
+    return null;
+  }
 }
 
 export function safeHttpUrl(value) {

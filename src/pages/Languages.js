@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Languages.css';
 import usePageTitle from '../hooks/usePageTitle';
 import { searchRepositories } from '../services/githubApi';
 import { formatFull } from '../utils/formatNumbers';
@@ -57,6 +56,7 @@ function Languages() {
   usePageTitle('Languages');
   const [stats, setStats] = useState({});
   const [note, setNote] = useState('');
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
     const controller = new AbortController();
@@ -151,17 +151,29 @@ function Languages() {
 
       <section className="alphabetical-section">
         <h4 className="section-title">All Languages</h4>
+        <label className="language-filter">
+          <span className="sr-only">Filter languages</span>
+          <input
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Filter languages"
+          />
+        </label>
         <div className="alphabet-container">
-          {Object.keys(groupedLanguages).sort().map((letter) => (
+          {Object.keys(groupedLanguages).sort().map((letter) => {
+            const names = groupedLanguages[letter].filter((lang) => lang.toLowerCase().includes(query.trim().toLowerCase()));
+            if (!names.length) return null;
+            return (
             <div className="alphabet-group" key={letter}>
               <h4 className="letter-heading">{letter}</h4>
               <div className="language-grid">
-                {groupedLanguages[letter].sort().map((lang) => (
+                {names.sort().map((lang) => (
                   <Link className="lang-item" to={exploreHref(lang)} key={lang}>{lang}</Link>
                 ))}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </section>
     </div>

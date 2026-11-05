@@ -26,13 +26,15 @@ export default function useGitHubSearch(filters) {
     const repoQuery = buildRepositoryQuery(filters);
     const userQuery = String(filters.q || '').trim();
     const page = Number(filters.page) || 1;
+    const order = filters.order === 'asc' ? 'asc' : 'desc';
+    const cache = !filters.reloadKey;
     setState((current) => ({ ...current, status: 'loading', error: null, repoQuery }));
 
     const tasks = [];
     if (type !== 'users' && repoQuery) {
       const sort = REPO_SORTS.has(filters.sort) ? filters.sort : '';
       tasks.push(
-        searchRepositories({ q: repoQuery, sort, page, perPage: 10, signal: controller.signal }).then((data) => ({
+        searchRepositories({ q: repoQuery, sort, order, page, perPage: 10, signal: controller.signal, cache }).then((data) => ({
           kind: 'repos',
           data,
         }))
@@ -41,7 +43,7 @@ export default function useGitHubSearch(filters) {
     if (type !== 'repositories' && userQuery) {
       const sort = USER_SORTS.has(filters.sort) ? filters.sort : '';
       tasks.push(
-        searchUsers({ q: userQuery, sort, page, perPage: 10, signal: controller.signal }).then((data) => ({
+        searchUsers({ q: userQuery, sort, order, page, perPage: 10, signal: controller.signal, cache }).then((data) => ({
           kind: 'users',
           data,
         }))

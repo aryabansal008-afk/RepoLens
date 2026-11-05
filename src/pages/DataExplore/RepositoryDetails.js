@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import useRepository from '../../hooks/useRepository';
 import usePageTitle from '../../hooks/usePageTitle';
@@ -16,6 +16,10 @@ import RepositoryGrowthChart from '../../components/Charts/RepositoryGrowthChart
 import { formatFull, formatKilobytes } from '../../utils/formatNumbers';
 import { formatDate, formatRelative } from '../../utils/formatDates';
 import { developerPath, repositoryPath } from '../../utils/githubUrlParser';
+import { BookmarkButton, CompareButton } from '../../components/RepoActions';
+import ReadmePanel from '../../components/ReadmePanel';
+import { publishLists } from '../../hooks/useLocalList';
+import { bookmarkFromRepo, rememberRecent } from '../../utils/localLists';
 import {
   codeFrequencySeries,
   contributorSeries,
@@ -65,6 +69,12 @@ export default function RepositoryDetails() {
 
   usePageTitle(repository ? repository.full_name : 'Repository');
 
+  useEffect(() => {
+    if (!repository?.owner) return;
+    rememberRecent(window.localStorage, bookmarkFromRepo(repository));
+    publishLists();
+  }, [repository]);
+
   const weekly = useMemo(() => weeklyCommits(sections.commitActivity.data, range), [sections.commitActivity.data, range]);
   const weekdays = useMemo(() => weekdayTotals(sections.commitActivity.data, range), [sections.commitActivity.data, range]);
   const hours = useMemo(() => hourBuckets(sections.commits.data, range), [sections.commits.data, range]);
@@ -101,6 +111,7 @@ export default function RepositoryDetails() {
     return iso && new Date(iso).getTime() >= rangeStart(range);
   }).slice(0, 8);
   const releases = (Array.isArray(sections.releases.data) ? sections.releases.data : []).filter((item) => !item.draft);
+  const openPulls = (Array.isArray(sections.pulls.data) ? sections.pulls.data : []).filter((item) => item.state === 'open').slice(0, 6);
 
   function selectRange(nextRange) {
     const next = new URLSearchParams(params);
@@ -124,7 +135,11 @@ export default function RepositoryDetails() {
           <h1 className="page-title">{repository.full_name}</h1>
           <p className="lede">{repository.description || 'No description provided.'}</p>
         </div>
-        <a className="btn-ghost" href={repository.html_url} target="_blank" rel="noreferrer">View on GitHub</a>
+        <div className="card-actions">
+          <a className="btn-ghost" href={repository.html_url} target="_blank" rel="noopener noreferrer">View on GitHub</a>
+          <BookmarkButton repo={repository} />
+          <CompareButton owner={repository.owner.login} repo={repository.name} fullName={repository.full_name} />
+        </div>
       </header>
 
       <section className="stat-grid">
@@ -137,7 +152,12 @@ export default function RepositoryDetails() {
       </section>
 
       <section className="panel meta-panel">
-        <p>Created {formatDate(repository.created_at)} · Last push {formatRelative(repository.pushed_at)}</p>
+        <p>
+          {repository.visibility || (repository.private ? 'private' : 'public')}
+          {' · '}Created {formatDate(repository.created_at)}
+          {' · '}Updated {formatRelative(repository.updated_at)}
+          {' · '}Last push {formatRelative(repository.pushed_at)}
+        </p>
         <p>License: {repository.license?.spdx_id || 'No license listed'} · Primary language: {repository.language || 'Not reported'}</p>
         {repository.topics?.length ? (
           <div className="chip-row">
@@ -189,12 +209,28 @@ export default function RepositoryDetails() {
       ) : null}
 
       {show('contributors') ? (
-        <ContributorChart
-          data={contributors}
-          loading={sections.contributors.status === 'loading'}
-          error={sections.contributors.status === 'error' ? messageOf(sections.contributors) : ''}
-          onRetry={reload}
-        />
+        <>
+          <ContributorChart
+            data={contributors}
+            loading={sections.contributors.status === 'loading'}
+            error={sections.contributors.status === 'error' ? messageOf(sections.contributors) : ''}
+            onRetry={reload}
+          />
+          {Array.isArray(sections.contributors.data) && sections.contributors.data.length ? (
+            <section className="panel">
+              <h3>Contributor profiles</h3>
+              <p className="chart-note">These counts are commits GitHub attributes on this repository. They are not GitHub-wide contribution totals.</p>
+              <ul className="plain-list">
+                {sections.contributors.data.map((person) => (
+                  <li key={person.id || person.login}>
+                    <a href={person.html_url} target="_blank" rel="noopener noreferrer">{person.login}</a>
+                    <span>{formatFull(person.contributions)} repository contributions</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+        </>
       ) : null}
 
       {show('pull-requests') ? (
@@ -240,6 +276,8 @@ export default function RepositoryDetails() {
         />
       ) : null}
 
+      {tab === 'overview' ? <ReadmePanel owner={owner} repo={repo} branch={repository.default_branch} /> : null}
+
       {tab === 'overview' || tab === 'activity' ? (
         <section className="split-panels">
           <div className="panel">
@@ -270,11 +308,23 @@ export default function RepositoryDetails() {
             <ul className="plain-list">
               {releases.map((release) => (
                 <li key={release.id}>
-                  <a href={release.html_url} target="_blank" rel="noreferrer">{release.name || release.tag_name}</a>
+                  <a href={release.html_url} target="_blank" rel="noopener noreferrer">{release.name || release.tag_name}</a>
                   <span>{formatDate(release.published_at)} · {release.tag_name}</span>
                 </li>
               ))}
             </ul>
+            <h3>Open pull requests in the latest sample</h3>
+            <p className="chart-note">Open pull requests found inside the 100 most recently updated pull records. This is not every open pull request.</p>
+            {openPulls.length ? (
+              <ul className="plain-list">
+                {openPulls.map((pull) => (
+                  <li key={pull.id}>
+                    <a href={pull.html_url} target="_blank" rel="noopener noreferrer">{pull.title}</a>
+                    <span>#{pull.number}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : <p className="chart-note">None of the latest pull records are open.</p>}
           </div>
         </section>
       ) : null}

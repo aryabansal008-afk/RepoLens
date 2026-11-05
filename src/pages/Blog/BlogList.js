@@ -48,7 +48,7 @@ export default function BlogList() {
   }
 
   return (
-    <main className="page-shell stack-gap">
+    <main className="page-shell stack-gap blog-page">
       <header className="page-intro">
         <h1 className="page-title">Blog</h1>
         <p className="lede">Notes on reading GitHub data carefully. These articles ship with the site. Drafts written in the browser stay off this list.</p>
@@ -74,9 +74,9 @@ export default function BlogList() {
       {state.status === 'loading' ? <PageSkeleton /> : null}
       {state.status === 'error' ? <ErrorState message={state.error.message} /> : null}
       {state.status === 'ready' && featured.length ? (
-        <section>
-          <h2>Featured</h2>
-          <div className="card-grid">
+        <section className="featured-block">
+          <h2 className="featured-title">Featured</h2>
+          <div className="card-grid featured-grid">
             {featured.map((post) => <ArticleCard post={post} key={post.slug} />)}
           </div>
         </section>

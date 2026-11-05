@@ -1,4 +1,4 @@
-const DIRECT = 'https://api.github.com';
+const DIRECT = (process.env.REACT_APP_GITHUB_API_BASE_URL || 'https://api.github.com').replace(/\/$/, '');
 const memory = new Map();
 const listeners = new Set();
 
@@ -120,7 +120,7 @@ export async function githubRequest(path, options = {}) {
 export async function githubJson(path, options = {}) {
   const ttl = options.ttl ?? 180000;
   const key = cacheKey(path, options.accept);
-  if (options.cache !== false) {
+  if (options.cache !== false && !options.fresh) {
     const hit = memory.get(key);
     if (hit && hit.expiry > Date.now()) return hit.value;
   }
@@ -153,7 +153,7 @@ function repoPath(owner, repo, suffix = '') {
   return `/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}${suffix}`;
 }
 
-export function searchRepositories({ q, sort, order = 'desc', page = 1, perPage = 10, signal }) {
+export function searchRepositories({ q, sort, order = 'desc', page = 1, perPage = 10, signal, cache = true }) {
   const params = new URLSearchParams({
     q,
     order,
@@ -161,10 +161,14 @@ export function searchRepositories({ q, sort, order = 'desc', page = 1, perPage 
     per_page: String(perPage),
   });
   if (sort) params.set('sort', sort);
-  return githubJson(`/search/repositories?${params.toString()}`, { signal, ttl: 120000 });
+  return githubJson(`/search/repositories?${params.toString()}`, {
+    signal,
+    ttl: 120000,
+    fresh: cache === false,
+  });
 }
 
-export function searchUsers({ q, sort, order = 'desc', page = 1, perPage = 10, signal }) {
+export function searchUsers({ q, sort, order = 'desc', page = 1, perPage = 10, signal, cache = true }) {
   const params = new URLSearchParams({
     q,
     order,
@@ -172,7 +176,11 @@ export function searchUsers({ q, sort, order = 'desc', page = 1, perPage = 10, s
     per_page: String(perPage),
   });
   if (sort) params.set('sort', sort);
-  return githubJson(`/search/users?${params.toString()}`, { signal, ttl: 120000 });
+  return githubJson(`/search/users?${params.toString()}`, {
+    signal,
+    ttl: 120000,
+    fresh: cache === false,
+  });
 }
 
 export function getRepository(owner, repo, signal) {
@@ -274,4 +282,19 @@ export function getUserEvents(username, signal) {
 
 export function getPublicEvents(signal, page = 1) {
   return githubJson(`/events?page=${page}`, { signal, ttl: 20000 });
+}
+
+function decodeBase64(content) {
+  const binary = atob(String(content).replace(/\n/g, ''));
+  const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
+export async function getReadme(owner, repo, signal) {
+  const data = await githubJson(repoPath(owner, repo, '/readme'), { signal, ttl: 300000 });
+  if (!data?.content) return null;
+  return {
+    markdown: decodeBase64(data.content),
+    htmlUrl: data.html_url || '',
+  };
 }

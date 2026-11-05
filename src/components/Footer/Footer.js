@@ -9,6 +9,8 @@ export default function Footer() {
         <Link to="/languages">Languages</Link>
         <Link to="/blog">Blog</Link>
         <Link to="/faqs">FAQs</Link>
+        <Link to="/compare">Compare</Link>
+        <Link to="/bookmarks">Bookmarks</Link>
       </nav>
     </footer>
   );
