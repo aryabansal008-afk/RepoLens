@@ -103,17 +103,15 @@ function Languages() {
 
   return (
     <div className="languages-page">
-      <div className="languages-head">
-        <h1>Explore by Language</h1>
-        <p>Discover public repositories by the language GitHub has indexed for them.</p>
-      </div>
-      <section className="popular-section">
-        <h4 className="section-title">Most Popular</h4>
-        <p className="language-note">
-          Card order is the existing RepoLens set, not an official popularity rank.
-          Repository counts come from GitHub Search and can be capped or marked incomplete.
+      <header className="page-intro">
+        <h1 className="page-title">Languages</h1>
+        <p className="lede">
+          Card order is the existing RepoLens set, not an official popularity rank. Repository counts come from GitHub Search and can be capped or marked incomplete.
           The star figure is the most-starred repository in that search, not a global star total.
         </p>
+      </header>
+      <section className="popular-section">
+        <h4 className="section-title">Most Popular</h4>
         {note ? <p className="language-note">{note}</p> : null}
         <div className="popular-grid">
           {popularLanguages.map((lang, idx) => {

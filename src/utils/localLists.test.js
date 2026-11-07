@@ -1,5 +1,4 @@
 import {
-  addCompare,
   readJsonList,
   rememberSearch,
   STORAGE_KEYS,
@@ -24,21 +23,13 @@ test('ignores invalid stored lists', () => {
   expect(readJsonList(storage, STORAGE_KEYS.bookmarks, isRepoRef)).toEqual([{ owner: 'a', repo: 'b' }]);
 });
 
-test('toggles bookmarks and caps comparison at three', () => {
+test('toggles a bookmark without storing a duplicate', () => {
   const storage = memoryStorage();
   const first = toggleBookmark(storage, { owner: 'a', repo: 'one' });
   expect(first.saved).toBe(true);
   const second = toggleBookmark(storage, { owner: 'a', repo: 'one' });
   expect(second.saved).toBe(false);
   expect(second.items).toEqual([]);
-
-  addCompare(storage, { owner: 'a', repo: 'one' });
-  addCompare(storage, { owner: 'a', repo: 'one' });
-  addCompare(storage, { owner: 'a', repo: 'two' });
-  addCompare(storage, { owner: 'b', repo: 'three' });
-  const blocked = addCompare(storage, { owner: 'c', repo: 'four' });
-  expect(blocked.ok).toBe(false);
-  expect(blocked.items).toHaveLength(3);
 });
 
 test('keeps recent searches unique', () => {

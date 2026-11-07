@@ -1,8 +1,31 @@
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { formatFull } from '../../utils/formatNumbers';
 import { formatRelative } from '../../utils/formatDates';
 import { repositoryPath } from '../../utils/githubUrlParser';
-import { BookmarkButton, CompareButton } from '../RepoActions';
+import { BookmarkButton } from '../RepoActions';
+
+export function RepoCardDescription({ text }) {
+  const textRef = useRef(null);
+  const [overflows, setOverflows] = useState(false);
+
+  useEffect(() => {
+    const node = textRef.current;
+    if (!node) return undefined;
+    const measure = () => setOverflows(node.scrollHeight > node.clientHeight + 1);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [text]);
+
+  return (
+    <div className={`repo-card-copy${overflows ? ' can-expand' : ''}`}>
+      <p ref={textRef} tabIndex={overflows ? 0 : undefined}>{text}</p>
+      {overflows ? <p className="repo-card-copy-full" aria-hidden="true">{text}</p> : null}
+    </div>
+  );
+}
 
 export default function RepositoryCard({ repo, layout = 'card' }) {
   if (!repo?.owner) return null;
@@ -31,7 +54,6 @@ export default function RepositoryCard({ repo, layout = 'card' }) {
             <a className="btn-ghost" href={repo.html_url} target="_blank" rel="noopener noreferrer">GitHub</a>
             <Link className="btn-solid" to={repositoryPath(repo.owner.login, repo.name)}>Details</Link>
             <BookmarkButton repo={repo} />
-            <CompareButton owner={repo.owner.login} repo={repo.name} fullName={repo.full_name} />
           </div>
         </div>
       </article>
@@ -44,9 +66,9 @@ export default function RepositoryCard({ repo, layout = 'card' }) {
         <img src={repo.owner.avatar_url} alt="" width="36" height="36" />
         <div>
           <h3>
-            <Link to={repositoryPath(repo.owner.login, repo.name)}>{repo.full_name}</Link>
+            <Link to={repositoryPath(repo.owner.login, repo.name)} title={repo.full_name}>{repo.full_name}</Link>
           </h3>
-          <p>{repo.description || 'No description provided.'}</p>
+          <RepoCardDescription text={repo.description || 'No description provided.'} />
         </div>
       </div>
       <dl className="meta-list">
@@ -66,7 +88,6 @@ export default function RepositoryCard({ repo, layout = 'card' }) {
         <a className="btn-ghost" href={repo.html_url} target="_blank" rel="noopener noreferrer">GitHub</a>
         <Link className="btn-solid" to={repositoryPath(repo.owner.login, repo.name)}>Details</Link>
         <BookmarkButton repo={repo} />
-        <CompareButton owner={repo.owner.login} repo={repo.name} fullName={repo.full_name} />
       </div>
     </article>
   );

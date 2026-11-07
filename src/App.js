@@ -16,7 +16,6 @@ const BlogDetails = lazy(() => import('./pages/Blog/BlogDetails'));
 const BlogEditor = lazy(() => import('./pages/Blog/BlogEditor'));
 const FAQ = lazy(() => import('./pages/FAQ/FAQ'));
 const Events = lazy(() => import('./pages/Events/Events'));
-const Comparison = lazy(() => import('./pages/Comparison/Comparison'));
 const Bookmarks = lazy(() => import('./pages/Bookmarks/Bookmarks'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
@@ -61,7 +60,6 @@ function AppContent() {
             <Route path="/users/:username" element={<DeveloperProfile />} />
             <Route path="/data-explore/repository/:owner/:repo" element={<RepositoryDetails />} />
             <Route path="/data-explore/developer/:username" element={<DeveloperProfile />} />
-            <Route path="/compare" element={<Comparison />} />
             <Route path="/bookmarks" element={<Bookmarks />} />
             <Route path="/blog" element={<BlogList />} />
             <Route path="/blog/:slug" element={<BlogDetails />} />

@@ -84,8 +84,8 @@ export default function DataExplore() {
                 {results.repos.incomplete_results ? ' · GitHub marked this count incomplete' : ''}
               </p>
               {results.repos.items?.length ? (
-                <div className="card-grid">
-                  {results.repos.items.map((repo) => <RepositoryCard repo={repo} key={repo.id} />)}
+                <div className="repo-column">
+                  {results.repos.items.map((repo) => <RepositoryCard repo={repo} layout="column" key={repo.id} />)}
                 </div>
               ) : (
                 <EmptyState title="No repositories" message="Try a broader keyword or fewer filters." />

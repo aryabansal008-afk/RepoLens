@@ -131,7 +131,7 @@ export const faqSections = [
       },
       {
         id: 'bookmarks',
-        question: 'Where are bookmarks and comparisons stored?',
+        question: 'Where are bookmarks stored?',
         answer:
           'In this browser only, using localStorage. They are not sent to a RepoLens server, and no GitHub token is stored. Clearing site data removes them. Bookmark counts are the values saved at that moment; open the repository for live numbers.',
       },

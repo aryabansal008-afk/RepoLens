@@ -2,7 +2,6 @@ export const STORAGE_KEYS = {
   bookmarks: 'repolens.bookmarks',
   searches: 'repolens.searches',
   recent: 'repolens.recentRepos',
-  compare: 'repolens.compare',
 };
 
 export function sameRepo(left, right) {
@@ -55,29 +54,6 @@ export function toggleBookmark(storage, repo) {
     : [{ ...repo, savedAt: new Date().toISOString() }, ...current].slice(0, 50);
   writeJsonList(storage, STORAGE_KEYS.bookmarks, next);
   return { items: next, saved: !exists };
-}
-
-export function addCompare(storage, repo) {
-  const current = readJsonList(storage, STORAGE_KEYS.compare, isRepoRef);
-  if (current.some((item) => sameRepo(item, repo))) {
-    return { ok: true, items: current, message: '' };
-  }
-  if (current.length >= 3) {
-    return {
-      ok: false,
-      items: current,
-      message: 'Comparison holds three repositories. Remove one before adding another.',
-    };
-  }
-  const next = [...current, { owner: repo.owner, repo: repo.repo, fullName: repo.fullName || `${repo.owner}/${repo.repo}` }];
-  writeJsonList(storage, STORAGE_KEYS.compare, next);
-  return { ok: true, items: next, message: '' };
-}
-
-export function removeCompare(storage, repo) {
-  const next = readJsonList(storage, STORAGE_KEYS.compare, isRepoRef).filter((item) => !sameRepo(item, repo));
-  writeJsonList(storage, STORAGE_KEYS.compare, next);
-  return next;
 }
 
 export function rememberSearch(storage, query, mode) {

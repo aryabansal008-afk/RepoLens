@@ -16,7 +16,7 @@ import RepositoryGrowthChart from '../../components/Charts/RepositoryGrowthChart
 import { formatFull, formatKilobytes } from '../../utils/formatNumbers';
 import { formatDate, formatRelative } from '../../utils/formatDates';
 import { developerPath, repositoryPath } from '../../utils/githubUrlParser';
-import { BookmarkButton, CompareButton } from '../../components/RepoActions';
+import { BookmarkButton } from '../../components/RepoActions';
 import ReadmePanel from '../../components/ReadmePanel';
 import { publishLists } from '../../hooks/useLocalList';
 import { bookmarkFromRepo, rememberRecent } from '../../utils/localLists';
@@ -138,7 +138,6 @@ export default function RepositoryDetails() {
         <div className="card-actions">
           <a className="btn-ghost" href={repository.html_url} target="_blank" rel="noopener noreferrer">View on GitHub</a>
           <BookmarkButton repo={repository} />
-          <CompareButton owner={repository.owner.login} repo={repository.name} fullName={repository.full_name} />
         </div>
       </header>
 

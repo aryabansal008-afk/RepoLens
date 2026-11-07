@@ -96,7 +96,7 @@ export default function FAQ() {
       {visible.map((section) => (
         <section key={section.id} className="stack-gap">
           <h2>{section.title}</h2>
-          <FAQAccordion items={section.items} mode={mode.value} modeNonce={mode.nonce} />
+          <p><FAQAccordion items={section.items} mode={mode.value} modeNonce={mode.nonce} /></p>
         </section>
       ))}
 

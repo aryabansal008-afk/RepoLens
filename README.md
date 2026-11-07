@@ -22,7 +22,7 @@ Optional: copy `.env.example` to `.env`. `REACT_APP_GITHUB_API_BASE_URL` default
 
 ## GitHub data
 
-Search, top-starred discovery, repository pages, developer pages, comparison, languages, commit statistics, pull requests, issues, contributors, READMEs, and public events use unauthenticated REST endpoints. Responses are cached in memory, in-flight requests are cancelled when you leave a page, and rate-limit responses are shown instead of replacement data. Search has a separate, tighter unauthenticated limit than the core REST quota.
+Search, top-starred discovery, repository pages, developer pages, languages, commit statistics, pull requests, issues, contributors, READMEs and public events use unauthenticated REST endpoints. Responses are cached in memory, in-flight requests are cancelled when you leave a page, and rate-limit responses are shown instead of replacement data. Search has a separate, tighter unauthenticated limit than the core REST quota.
 
 Routes:
 
@@ -30,7 +30,7 @@ Routes:
 - `/data-explore` repository discovery
 - `/explore/:owner/:repo` repository analytics
 - `/users/:username` developer profile
-- `/compare` and `/bookmarks` (stored only in this browser)
+- `/bookmarks` (stored only in this browser)
 - `/languages`, `/blog`, `/blog/:slug`, `/faqs`, `/events`
 
 Older `/data-explore/repository/...` and `/data-explore/developer/...` URLs still open the same pages.

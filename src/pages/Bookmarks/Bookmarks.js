@@ -5,6 +5,7 @@ import EmptyState from '../../components/EmptyState/EmptyState';
 import { formatFull } from '../../utils/formatNumbers';
 import { formatRelative } from '../../utils/formatDates';
 import { repositoryPath } from '../../utils/githubUrlParser';
+import { RepoCardDescription } from '../../components/RepositoryCard/RepositoryCard';
 import {
   STORAGE_KEYS,
   clearList,
@@ -13,8 +14,6 @@ import {
   sameRepo,
   toggleBookmark,
 } from '../../utils/localLists';
-import { CompareButton } from '../../components/RepoActions';
-
 export default function Bookmarks() {
   usePageTitle('Bookmarks');
   const bookmarks = useLocalList(STORAGE_KEYS.bookmarks, isRepoRef);
@@ -45,8 +44,8 @@ export default function Bookmarks() {
           <div className="card-grid">
             {bookmarks.map((item) => (
               <article className="repo-card panel" key={`${item.owner}/${item.repo}`}>
-                <h3><Link to={repositoryPath(item.owner, item.repo)}>{item.fullName || `${item.owner}/${item.repo}`}</Link></h3>
-                <p>{item.description || 'No description was saved.'}</p>
+                <h3><Link to={repositoryPath(item.owner, item.repo)} title={item.fullName || `${item.owner}/${item.repo}`}>{item.fullName || `${item.owner}/${item.repo}`}</Link></h3>
+                <RepoCardDescription text={item.description || 'No description was saved.'} />
                 <dl className="meta-list">
                   <div><dt>Language</dt><dd>{item.language || '—'}</dd></div>
                   <div><dt>Stars when saved</dt><dd>{formatFull(item.stars)}</dd></div>
@@ -71,7 +70,6 @@ export default function Bookmarks() {
                   >
                     Remove
                   </button>
-                  <CompareButton owner={item.owner} repo={item.repo} fullName={item.fullName} />
                 </div>
               </article>
             ))}
