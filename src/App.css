@@ -175,8 +175,8 @@ h6 {
   color: #a1a1aa;
   text-decoration: none;
   font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 500;
+  font-size: 21px;
+  font-weight: 700;
   line-height: 1;
   letter-spacing: 0.3px;
   transition: color 0.2s ease;
@@ -1745,6 +1745,16 @@ a.language-card {
 
 .featured-grid {
   margin-bottom: 8px;
+  align-items: start;
+}
+
+.featured-grid .repo-card {
+  height: auto;
+  padding-bottom: 10px;
+}
+
+.featured-grid .repo-card .chart-note {
+  margin-bottom: 0;
 }
 
 .blog-page .page-intro {
